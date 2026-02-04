@@ -1,8 +1,4 @@
-Since this is for your **Capstone Project** and you have a background in **Mathematics** and **NLP** (working with Prof. Nakov), your README should look professional, academic, and technically rigorous.
 
-Here is a high-quality template specifically tailored to your **Cryptocurrency Price Prediction** bot.
-
----
 
 # Bitcoin Intraday Trading Bot: News Sentiment & Price Prediction
 
