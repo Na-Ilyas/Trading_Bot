@@ -1,0 +1,23 @@
+# --- DATA INGESTION & EXCHANGE CONNECTIVITY ---
+ccxt>=4.0.0             # Unified API for Binance and 100+ exchanges
+feedparser>=6.0.10      # Parsing RSS feeds from CoinDesk and news sites
+requests>=2.31.0        # General HTTP requests for news scraping
+beautifulsoup4>=4.12.2  # Scraping news content from HTML
+
+# --- DATA PROCESSING & QUANTITATIVE TOOLS ---
+pandas>=2.1.0           # Data manipulation and time-series alignment
+numpy>=1.26.0           # Numerical operations for feature vectors
+scikit-learn>=1.3.0     # Preprocessing, scaling, and train/test splitting
+Boruta>=0.3             # Feature selection for on-chain metrics
+pandas_ta>=0.3.14b      # Technical analysis indicators (RSI, MACD, etc.)
+
+# --- DEEP LEARNING & GRAPH NETWORKS ---
+tensorflow>=2.15.0      # Core framework for CNN-LSTM and Hybrid GNN
+spektral>=1.3.1         # Specifically for Graph Convolutional Network layers
+torch>=2.1.0            # Backend for FinBERT sentiment analysis
+transformers>=4.35.0    # HuggingFace library for FinBERT/RoBERTa models
+
+# --- VALIDATION & VISUALIZATION ---
+matplotlib>=3.8.0       # Plotting training loss and price forecasts
+seaborn>=0.12.2         # Statistical data visualization for error analysis
+scipy>=1.11.0           # Signal processing and statistical tests
