@@ -1,0 +1,21 @@
+
+===================================================
+COMPARATIVE RESULTS (Triple Barrier + Attention)
+===================================================
+Strategy: Trade only if Prob > 55.00000000000001%
+Fee: 0.1% per side
+
+MODEL A (Undersampling Approach):
+---------------------------------
+Final Balance : $922.41
+ROI           : -7.76%
+Total Trades  : 4
+Win Rate      : 50.00%
+
+MODEL B (Weighted Loss Approach):
+---------------------------------
+Final Balance : $986.79
+ROI           : -1.32%
+Total Trades  : 5
+Win Rate      : 40.00%
+===================================================

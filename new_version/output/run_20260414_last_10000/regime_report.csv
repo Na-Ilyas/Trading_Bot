@@ -1,0 +1,4 @@
+regime,n_positions_closed,win_rate,avg_pnl_pct,sharpe,total_pnl_amount
+LOW_VOL,28,100.0,73.068,376.6,756.74
+MEAN_REVERTING,16,100.0,563.46,138.59,1286.51
+TRENDING,232,3.4,-1096890.224,-21.29,-10987872.95

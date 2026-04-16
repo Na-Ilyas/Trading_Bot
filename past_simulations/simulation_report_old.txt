@@ -1,0 +1,21 @@
+
+============================================================
+FINAL REPORT: HYBRID GNN-BiLSTM (Leak-Proof)
+============================================================
+Threshold Strategy: Mean +/- 0.1 * Std Dev
+
+MODEL A (Random Undersampling):
+-------------------------------
+Final Balance: $674.27
+ROI          : -32.57%
+Sharpe Ratio : -0.2079
+Total Trades : 329
+
+MODEL B (Class Weighting):
+--------------------------
+Final Balance: $682.24
+ROI          : -31.78%
+Sharpe Ratio : -0.1953
+Total Trades : 340
+============================================================
+Logs saved to .csv files.

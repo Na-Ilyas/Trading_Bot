@@ -4,6 +4,7 @@ Data Engine
 - Computes full suite of technical indicators
 - Generates synthetic daily sentiment scores (multi-crypto)
 - Assembles the master feature DataFrame
+- Supports date-range filtering via start_date/end_date
 """
 
 import numpy as np
@@ -14,7 +15,8 @@ import config as C
 # ═══════════════════════════════════════════════════════
 #  1. Synthetic OHLCV Generator  (drop-in for ccxt later)
 # ═══════════════════════════════════════════════════════
-def _generate_ohlcv(n: int, seed: int, start_price: float = 60000.0) -> pd.DataFrame:
+def _generate_ohlcv(n: int, seed: int, start_price: float = 60000.0,
+                    start_date=None) -> pd.DataFrame:
     """Geometric Brownian Motion with GARCH-like vol clustering."""
     rng = np.random.default_rng(seed)
     mu_hourly  = 0.00002           # slight upward drift
@@ -36,7 +38,10 @@ def _generate_ohlcv(n: int, seed: int, start_price: float = 60000.0) -> pd.DataF
     opn    = prices * (1 + rng.uniform(-0.005, 0.005, n))
     volume = rng.lognormal(mean=15, sigma=1.2, size=n)
 
-    ts = pd.date_range(end=pd.Timestamp.now().floor("h"), periods=n, freq="1h")
+    if start_date is not None:
+        ts = pd.date_range(start=start_date, periods=n, freq="1h")
+    else:
+        ts = pd.date_range(end=pd.Timestamp.now().floor("h"), periods=n, freq="1h")
 
     return pd.DataFrame({
         "timestamp": ts,
@@ -45,9 +50,14 @@ def _generate_ohlcv(n: int, seed: int, start_price: float = 60000.0) -> pd.DataF
     })
 
 
-def fetch_ohlcv() -> pd.DataFrame:
+def fetch_ohlcv(start_date=None, end_date=None, n_candles=None) -> pd.DataFrame:
     """Returns hourly OHLCV.  Swap body for ccxt when going live."""
-    return _generate_ohlcv(C.N_CANDLES, C.SYNTHETIC_SEED)
+    if start_date is not None and end_date is not None:
+        hours = int((end_date - start_date).total_seconds() / 3600)
+        hours = max(hours, 100)  # minimum 100 candles
+        return _generate_ohlcv(hours, C.SYNTHETIC_SEED, start_date=start_date)
+    candles = n_candles if n_candles else C.N_CANDLES
+    return _generate_ohlcv(candles, C.SYNTHETIC_SEED)
 
 
 # ═══════════════════════════════════════════════════════
@@ -137,15 +147,16 @@ def generate_sentiment(df: pd.DataFrame) -> pd.DataFrame:
 
     btc_sent = np.zeros(len(dates))
     for i in range(len(dates)):
-        # Base random + small signal from price
+        # Use PREVIOUS day's return to avoid intra-day look-ahead
         if i < len(daily_ret):
-            btc_sent[i] = np.clip(0.5 + 0.3 * daily_ret[i] + 0.15 * rng.normal(), 0, 1)
+            prev_ret = daily_ret[i - 1] if i >= 1 else 0.0
+            btc_sent[i] = np.clip(0.5 + 0.3 * prev_ret + 0.15 * rng.normal(), 0, 1)
         else:
             btc_sent[i] = np.clip(0.5 + 0.15 * rng.normal(), 0, 1)
 
     sent_df = pd.DataFrame({"date": dates, "sentiment_btc": btc_sent})
 
-    # Cross-crypto sentiments (partially correlated with BC)
+    # Cross-crypto sentiments (partially correlated with BTC)
     for sym in C.CROSS_CRYPTOS:
         noise = 0.2 * rng.normal(size=len(dates))
         sent_df[f"sentiment_{sym.lower()}"] = np.clip(btc_sent + noise, 0, 1)
@@ -164,9 +175,9 @@ def generate_sentiment(df: pd.DataFrame) -> pd.DataFrame:
 # ═══════════════════════════════════════════════════════
 #  4. Master Feature Assembly
 # ═══════════════════════════════════════════════════════
-def build_features() -> pd.DataFrame:
+def build_features(start_date=None, end_date=None, n_candles=None) -> pd.DataFrame:
     """Full pipeline: fetch → indicators → sentiment → clean."""
-    df = fetch_ohlcv()
+    df = fetch_ohlcv(start_date=start_date, end_date=end_date, n_candles=n_candles)
     df = add_technical_indicators(df)
     df = generate_sentiment(df)
 

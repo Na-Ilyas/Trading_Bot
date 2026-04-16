@@ -1,0 +1,57 @@
+{
+  "run_timestamp": "2026-04-02T15:25:44.711407",
+  "date_range": "Last 3000 candles (synthetic)",
+  "data": {
+    "total_rows": 2951,
+    "total_features_raw": 47,
+    "features_selected": 31
+  },
+  "model": {
+    "total_params": 137105,
+    "epochs_run": 15,
+    "best_val_loss": 0.6905,
+    "best_val_accuracy": 0.5405
+  },
+  "backtest": {
+    "initial_capital": 1000.0,
+    "final_capital": 375.79,
+    "total_return_pct": -62.42,
+    "max_equity": 2655.98,
+    "directional_accuracy_trades": 47.15,
+    "directional_accuracy_all": 48.45,
+    "sharpe_ratio": 0.2994,
+    "max_drawdown_pct": -91.84,
+    "total_trades": 246,
+    "n_longs": 159,
+    "n_shorts": 87,
+    "n_holds": 173,
+    "win_rate_pct": 47.15,
+    "profit_factor": 1.011,
+    "avg_trade_pnl_pct": 0.1576,
+    "biggest_win_pct": 191.2158,
+    "biggest_loss_pct": -108.1377,
+    "biggest_trade_amount": 663.99,
+    "total_fees_paid": 53.6,
+    "max_win_streak": 4,
+    "max_loss_streak": 10
+  },
+  "config_snapshot": {
+    "window_size": 24,
+    "train_ratio": 0.7,
+    "val_ratio": 0.15,
+    "test_ratio": 0.15,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "dropout_rate": 0.3,
+    "long_threshold_config": 0.6,
+    "short_threshold_config": 0.4,
+    "calibrated_long_threshold": 0.5462578415870667,
+    "calibrated_short_threshold": 0.48428636193275454,
+    "position_frac": 0.25,
+    "use_kelly": false,
+    "use_attention": false,
+    "use_residual": false,
+    "label_smoothing": 0.0,
+    "use_learnable_adj": false
+  }
+}

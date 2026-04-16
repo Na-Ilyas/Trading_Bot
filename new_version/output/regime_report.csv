@@ -1,0 +1,4 @@
+regime,n_trades,win_rate,avg_pnl_pct,sharpe,max_dd
+TRENDING,11,54.5,0.037,8.97,0.64
+MEAN_REVERTING,10,50.0,0.007,2.78,0.8
+LOW_VOL,6,33.3,-0.081,-43.63,0.46

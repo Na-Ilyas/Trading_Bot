@@ -1,0 +1,2 @@
+symbol,direction,entry_price,close_price,pnl_pct,pnl_amount,position_duration_hours,total_return_pct,max_drawdown_pct
+BTC/USDT,LONG,7598.475465,28953.867132,281.0484,2802.87,311,280.29,-49.36

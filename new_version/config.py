@@ -33,7 +33,8 @@ TEST_RATIO      = 0.15
 # ── Feature Selection ─────────────────────────────────
 USE_BORUTA      = True
 USE_LIGHTGBM    = True
-BORUTA_MAX_ITER = 50
+BORUTA_MAX_ITER = 100
+BORUTA_RF_DEPTH = 7            # RandomForest max_depth for Boruta base estimator
 LGBM_TOP_K      = 30           # Keep top-K features from LightGBM
 
 # ── Sliding Window / Graph ────────────────────────────
@@ -51,9 +52,26 @@ EPOCHS          = 50
 BATCH_SIZE      = 64
 EARLY_STOP_PAT  = 10
 
+# ── Model Improvements (feature flags) ───────────────
+# These are OFF by default to match original model performance.
+# Enable individually for experimentation.
+USE_ATTENTION       = False     # Temporal attention on BiLSTM
+ATTENTION_UNITS     = 64
+USE_RESIDUAL        = False     # Residual connection in fusion
+LABEL_SMOOTHING     = 0.0       # Set to 0.1 to enable; 0.0 = standard BCE
+USE_LEARNABLE_ADJ   = False     # Experimental: learnable adjacency matrix
+
 # ── Backtester ────────────────────────────────────────
 INITIAL_CAPITAL = 1000.0
 TRADE_FEE       = 0.001         # 0.1% Binance fee
 LONG_THRESHOLD  = 0.60          # P(up) > this → LONG  (conservative)
 SHORT_THRESHOLD = 0.40          # P(up) < this → SHORT (conservative)
 POSITION_FRAC   = 0.25          # 25% of capital per trade (adjustable)
+USE_KELLY       = False         # Kelly criterion for position sizing (enable for experiments)
+
+# ── Baseline Models (for --compare mode) ─────────────
+LSTM_STANDALONE_UNITS = [64, 64]
+RNN_UNITS             = [64, 64]
+XGB_N_ESTIMATORS      = 200
+XGB_MAX_DEPTH         = 6
+ARIMA_ORDER           = (2, 1, 2)

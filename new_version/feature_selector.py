@@ -19,22 +19,39 @@ def boruta_select(X_train: pd.DataFrame, y_train: np.ndarray) -> list:
     """Boruta feature selection on training data only."""
     from boruta import BorutaPy
 
+    # Validate input
+    if X_train.isnull().any().any():
+        print("  [Boruta] WARNING: NaN values detected, filling with 0")
+        X_clean = X_train.fillna(0).values
+    else:
+        X_clean = X_train.values
+
     rf = RandomForestClassifier(
-        n_estimators=100, n_jobs=-1, random_state=C.SYNTHETIC_SEED, max_depth=5
+        n_estimators=100, n_jobs=-1,
+        random_state=C.SYNTHETIC_SEED,
+        max_depth=C.BORUTA_RF_DEPTH,
     )
     selector = BorutaPy(
         rf, n_estimators="auto",
         max_iter=C.BORUTA_MAX_ITER,
         random_state=C.SYNTHETIC_SEED,
-        verbose=0
+        verbose=2
     )
-    selector.fit(X_train.values, y_train)
+    selector.fit(X_clean, y_train)
 
     selected = X_train.columns[selector.support_].tolist()
     # Also include "tentative" features (borderline important)
     tentative = X_train.columns[selector.support_weak_].tolist()
 
     print(f"  [Boruta] Confirmed: {len(selected)}, Tentative: {len(tentative)}")
+
+    # Print top-10 feature importances for debugging
+    importances = pd.Series(selector.estimator_.feature_importances_, index=X_train.columns)
+    importances = importances.sort_values(ascending=False)
+    print("  [Boruta] Top-10 feature importances:")
+    for feat, imp in importances.head(10).items():
+        print(f"    {feat}: {imp:.4f}")
+
     return selected + tentative
 
 
